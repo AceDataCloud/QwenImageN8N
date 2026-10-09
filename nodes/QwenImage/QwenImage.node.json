@@ -1,0 +1,10 @@
+{
+  "node": "@acedatacloud/n8n-nodes-qwen-image.qwenImage",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": ["Marketing & Content"],
+  "resources": {
+    "primaryDocumentation": [{ "url": "https://github.com/AceDataCloud/QwenImageN8N#4-import-and-run-the-first-workflow" }],
+    "credentialDocumentation": [{ "url": "https://github.com/AceDataCloud/QwenImageN8N#3-save-the-credential-in-n8n" }]
+  }
+}

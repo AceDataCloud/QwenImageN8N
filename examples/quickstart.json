@@ -1,0 +1,103 @@
+{
+  "name": "Qwen Image quickstart by AceDataCloud",
+  "nodes": [
+    {
+      "id": "start",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "create",
+      "name": "Create",
+      "type": "@acedatacloud/n8n-nodes-qwen-image.qwenImage",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "resource": "image",
+        "operation": "generate",
+        "model": "qwen-image-3.0",
+        "size": "1024*1024",
+        "prompt": "A single blue paper sphere on a cream background, studio product photograph, no text. n8n validation."
+      },
+      "retryOnFail": false
+    },
+    {
+      "id": "wait",
+      "name": "Wait 30 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "webhookId": "qwen-image-first-image-wait"
+    },
+    {
+      "id": "get",
+      "name": "Get Task",
+      "type": "@acedatacloud/n8n-nodes-qwen-image.qwenImage",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "resource": "task",
+        "operation": "get",
+        "taskId": "={{ $('Create').first().json.taskId }}"
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create": {
+      "main": [
+        [
+          {
+            "node": "Wait 30 Seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 30 Seconds": {
+      "main": [
+        [
+          {
+            "node": "Get Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

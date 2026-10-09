@@ -1,0 +1,48 @@
+{
+  "id": "aceQwenImageSmokeTest",
+  "name": "Qwen Image credential boundary smoke test",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "task",
+        "operation": "get",
+        "taskId": "credential-validation-only"
+      },
+      "id": "task",
+      "name": "Get Task",
+      "type": "@acedatacloud/n8n-nodes-qwen-image.qwenImage",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
