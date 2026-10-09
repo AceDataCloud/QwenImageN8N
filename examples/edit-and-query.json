@@ -1,0 +1,104 @@
+{
+  "name": "Qwen Image editing with task query by AceDataCloud",
+  "nodes": [
+    {
+      "id": "start",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "create",
+      "name": "Edit",
+      "type": "@acedatacloud/n8n-nodes-qwen-image.qwenImage",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "resource": "image",
+        "operation": "edit",
+        "model": "qwen-image-3.0",
+        "size": "1024*1024",
+        "prompt": "Change the sphere color to coral while keeping the cream background and studio lighting. No text.",
+        "imageUrls": "https://platform2.cdn.acedata.cloud/qwen-image/7f59ba0e-80cf-4733-8358-3d87fbd23f3b.png"
+      },
+      "retryOnFail": false
+    },
+    {
+      "id": "wait",
+      "name": "Wait 30 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "webhookId": "qwen-image-first-image-wait"
+    },
+    {
+      "id": "get",
+      "name": "Get Task",
+      "type": "@acedatacloud/n8n-nodes-qwen-image.qwenImage",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "resource": "task",
+        "operation": "get",
+        "taskId": "={{ $('Edit').first().json.taskId }}"
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Edit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 30 Seconds": {
+      "main": [
+        [
+          {
+            "node": "Get Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit": {
+      "main": [
+        [
+          {
+            "node": "Wait 30 Seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

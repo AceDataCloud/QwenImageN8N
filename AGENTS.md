@@ -1,0 +1,3 @@
+# QwenImageN8N
+
+Independent n8n community node for AceDataCloud Qwen Image. Use Node.js 24, pnpm 11, pnpm install --frozen-lockfile --ignore-scripts, pnpm run build, pnpm run lint, and pnpm test. Keep one service per package, no external runtime dependencies, masked credentials, and n8n authenticated request helpers. Runtime code must not read files or environment variables. Image creation is asynchronous and never retried automatically; task queries reuse the original ID. Check current model, size, and price contracts before exposing new options. Submit code through PRs under Ace Data Cloud Dev.
