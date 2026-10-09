@@ -1,0 +1,62 @@
+name: Verify published package
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Published npm version to verify
+        required: true
+        default: '0.1.0'
+        type: string
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - name: Check exact public version
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+        run: |
+          test "$(node -p "require('./package.json').version")" = "$PACKAGE_VERSION"
+          test "$(npm view "@acedatacloud/n8n-nodes-qwen-image@$PACKAGE_VERSION" version)" = "$PACKAGE_VERSION"
+      - name: Scan provenance, source and package
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+        run: |
+          npx --yes @n8n/scan-community-package@0.38.0 "@acedatacloud/n8n-nodes-qwen-image@$PACKAGE_VERSION" | tee /tmp/scan.log
+          grep -F 'has passed all security checks' /tmp/scan.log
+      - name: Install from npm in fresh n8n 2.42.3
+        env:
+          PACKAGE_VERSION: ${{ inputs.version }}
+        run: |
+          docker run --rm \
+            -v "$PWD/tests/load-workflow.json:/package/load-workflow.json:ro" \
+            -e PACKAGE_VERSION \
+            -e N8N_DIAGNOSTICS_ENABLED=false \
+            -e N8N_VERSION_NOTIFICATIONS_ENABLED=false \
+            -e N8N_TEMPLATES_ENABLED=false \
+            --entrypoint sh n8nio/n8n:2.42.3 -ec '
+              mkdir -p /home/node/.n8n/nodes
+              npm install --prefix /home/node/.n8n/nodes --registry=https://registry.npmjs.org \
+                --legacy-peer-deps --no-audit --no-fund \
+                "@acedatacloud/n8n-nodes-qwen-image@$PACKAGE_VERSION"
+              npm ls --prefix /home/node/.n8n/nodes --depth=0
+              export NODE_PATH=/usr/local/lib/node_modules/n8n/node_modules
+              export N8N_USER_FOLDER=/home/node
+              n8n import:workflow --input=/package/load-workflow.json >/tmp/import.log 2>&1
+              if n8n execute --id=aceQwenImageSmokeTest >/tmp/n8n-load.log 2>&1; then
+                echo "Expected the credential-free workflow to stop before an API request" >&2
+                exit 1
+              fi
+              if grep -Eiq "unrecognized node|unknown node|cannot find module|error loading" /tmp/n8n-load.log; then
+                tail -n 40 /tmp/n8n-load.log >&2
+                exit 1
+              fi
+              grep -Eiq "credential.*required" /tmp/n8n-load.log
+              echo "PASS: npm package loaded in fresh n8n and stopped before any API call"
+            '
