@@ -2,7 +2,7 @@
 
 Generate one Qwen Image picture and retrieve its completed result in an n8n workflow through AceDataCloud. This package integrates only the Qwen Image service and is maintained by Ace Data Cloud.
 
-**Package:** @acedatacloud/n8n-nodes-qwen-image · [Current models and pricing](https://platform.acedata.cloud/models) · [Source](https://github.com/AceDataCloud/QwenImageN8N)
+**Package:** @acedatacloud/n8n-nodes-qwen-image · [Current models and pricing](https://platform.acedata.cloud/models?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=qwenimagen8n_readme_pricing) · [Source](https://github.com/AceDataCloud/QwenImageN8N)
 
 ## 1. Install the node
 
@@ -14,7 +14,9 @@ n8n Cloud offers a community node in the node picker only after n8n verifies it.
 
 ## 2. Get an API key with Qwen Image access
 
-1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications).
+New account? Register and sign in first. If the Applications page has no General application yet, choose **Initialize General Application**, then continue with the key steps below.
+
+1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=qwenimagen8n_readme_api_key).
 2. Open **General application**. Copy its API key or choose **Manage Keys → Create** for a separate n8n key.
 3. Check Qwen Image access, current pricing, and balance. If **Allowed APIs** is enabled, include both /qwen-image/images and /qwen-image/tasks.
 
@@ -61,7 +63,7 @@ Use a literal asterisk in the size. Keep **Retry On Fail** off on **Create** and
 
 ## 5. Confirm completion and the charge
 
-Open **Get Task** output. Continue only when **status=succeeded**, **finished=true**, and **successful=true**. Open the URL in **imageUrls**. Check the matching request in [Ace Data Cloud usage history](https://platform.acedata.cloud/console): the task's **cost.amount** is in **Credits**, not USD, and the current account package rate determines any USD conversion.
+Open **Get Task** output. Continue only when **status=succeeded**, **finished=true**, and **successful=true**. Open the URL in **imageUrls**. Check the matching request in [Ace Data Cloud usage history](https://platform.acedata.cloud/console?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=qwenimagen8n_readme_console): the task's **cost.amount** is in **Credits**, not USD, and the current account package rate determines any USD conversion.
 
 One actual n8n 2.42.3 validation run submitted task **ea18ba09-dd10-43bd-a4b8-d3de3b32a575** once, then queried only that ID to success. Its 1024×1024 PNG opened successfully. The task reported **0.2838339222614841 Credits**; one HTTP 200 usage record with the same test credential and trace ID **94aebb17-4e57-4902-96b3-dc585e1889b2** deducted the same amount. Your price may differ by model, image size, account, and current pricing.
 
