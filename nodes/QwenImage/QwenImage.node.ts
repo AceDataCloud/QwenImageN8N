@@ -191,12 +191,12 @@ async function request(context: IExecuteFunctions, endpoint: string, body: IData
 
 export class QwenImage implements INodeType {
   description: INodeTypeDescription = {
-    displayName: 'Qwen Image by AceDataCloud', name: 'qwenImage',
+    displayName: 'Qwen Image', name: 'qwenImage',
     icon: { light: 'file:icon.svg', dark: 'file:icon.dark.svg' },
     group: ['transform'], version: 1,
     subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
     description: 'Generate or edit Qwen Image pictures and retrieve the same task until it finishes',
-    defaults: { name: 'Qwen Image by AceDataCloud' },
+    defaults: { name: 'Qwen Image' },
     inputs: [NodeConnectionTypes.Main], outputs: [NodeConnectionTypes.Main],
     usableAsTool: true, credentials: [{ name: 'aceDataQwenImageApi', required: true }], properties,
   };
@@ -209,7 +209,7 @@ export class QwenImage implements INodeType {
           const credentials = await this.getCredentials('aceDataQwenImageApi');
           if (typeof credentials.apiToken !== 'string' || !credentials.apiToken.trim())
             throw new UserError('Missing API token');
-        } catch { throw new NodeOperationError(this.getNode(), 'A Qwen Image by AceDataCloud credential is required.'); }
+        } catch { throw new NodeOperationError(this.getNode(), 'A Qwen Image credential is required.'); }
 
         const resource = this.getNodeParameter('resource', index) as string;
         const operation = this.getNodeParameter('operation', index) as string;

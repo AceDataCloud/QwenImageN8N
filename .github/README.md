@@ -30,7 +30,7 @@ Copy only the application API token. Do not include **Bearer**, quotes, or a pla
 
 ## 3. Save the credential in n8n
 
-Add **Qwen Image by AceDataCloud** to a workflow. In **Credential**, select **Connect to Qwen Image by AceDataCloud** and create a new credential. Paste the token into **API Token**. Set **Allowed HTTP Request Domains** to **Specific Domains** and enter api.acedata.cloud, then save. Select the same credential on both **Create** and **Get Task**.
+Add **Qwen Image** to a workflow. In **Credential**, select **Connect to Qwen Image** and create a new credential. Paste the token into **API Token**. Set **Allowed HTTP Request Domains** to **Specific Domains** and enter api.acedata.cloud, then save. Select the same credential on both **Create** and **Get Task**.
 
 The credential test queries a nonexistent task ID. It does not generate an image or verify generation access. The first actual generation confirms service entitlement.
 

@@ -2,7 +2,7 @@ import type { IAuthenticateGeneric, ICredentialTestRequest, ICredentialType, INo
 
 export class AceDataQwenImageApi implements ICredentialType {
   name = 'aceDataQwenImageApi';
-  displayName = 'Qwen Image by AceDataCloud API';
+  displayName = 'Qwen Image API';
   documentationUrl = 'https://github.com/AceDataCloud/QwenImageN8N#3-save-the-credential-in-n8n';
   icon = 'file:../nodes/QwenImage/icon.svg' as const;
   properties: INodeProperties[] = [
