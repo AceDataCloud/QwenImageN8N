@@ -14,7 +14,7 @@ n8n Cloud offers a community node in the node picker only after n8n verifies it.
 
 ## 2. Get an API key with Qwen Image access
 
-New account? Register and sign in first. If the Applications page has no General application yet, choose **Initialize General Application**, then continue with the key steps below.
+Sign in to Applications and copy the API key from the General Application card.
 
 1. Sign in at [Ace Data Cloud → Applications](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen&utm_content=qwenimagen8n_readme_api_key).
 2. Open **General application**. Copy its API key or choose **Manage Keys → Create** for a separate n8n key.
